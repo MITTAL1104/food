@@ -34,10 +34,30 @@
     color: #747474;
     font-weight: 500;
     padding: 1vw 2.3vw;
-    background-color: white;
+    background-color: black;
     font-size: max(1vw,13px);
     border-radius: 50px;
 }
+
+.header-contents a {
+    display: inline-block;     
+    border: none;
+    color: #747474;
+    font-weight: 500;
+    padding: 1vw 2.3vw;
+    background-color: whitesmoke;
+    font-size: max(1vw,13px);
+    border-radius: 50px;
+    text-decoration: none; 
+    cursor: pointer;              
+    transition: background 0.3s; 
+}
+
+.header-contents a:hover {
+    background-color: tomato;    
+    color: #fff;
+}
+
 
 @media (max-width:1050px){
     .header-contents{
