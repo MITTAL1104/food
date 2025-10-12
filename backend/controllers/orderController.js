@@ -1,4 +1,5 @@
 import orderModel from "../models/orderModel.js";
+import promocodeModel from "../models/promocodeModel.js";
 import userModel from "../models/userModel.js";
 import  Stripe  from "stripe"
 
@@ -8,41 +9,82 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const placeOrder = async(req,res)=>{
 
     const frontend_url=process.env.FRONTEND_URL;
+    const {items,promoDiscount=0,promoCode="",amount}=req.body;
 
     try{
         const newOrder = new orderModel({
             userId:req.body.userId,
-            items:req.body.items,
-            amount:req.body.amount,
-            address:req.body.address
+            items,
+            amount,
+            address:req.body.address,
+            promoCode,
+            promoDiscount
         })
         await newOrder.save();
         await userModel.findByIdAndUpdate(req.body.userId,{cartData:{}});
 
-        const line_items = req.body.items.map((item)=>({
-            price_data:{
-                currency:"inr",
-                product_data:{
-                    name:item.name
-                },
-                unit_amount:item.price*100
-            },
-            quantity:item.quantity
-        }))
+        const subtotal = items.reduce((acc,item)=>acc+item.price*item.quantity,0);
 
-        line_items.push({
-            price_data:{
-                currency:"inr",
-                product_data:{
-                    name:"Delivery Charges"
+        const line_items=[
+            {
+                price_data:{
+                    currency:"inr",
+                    product_data:{
+                        name:promoDiscount>0?`Subtotal (after discount ${promoCode})`:"Subtotal",
+                    },
+                    unit_amount:Math.round((subtotal-promoDiscount)*100)
                 },
-                unit_amount:50*100
+                quantity:1,
             },
-            quantity:1
-        })
+            {
+                price_data:{
+                    currency:"inr",
+                    product_data:{
+                        name:"Delivery Charges",
+                    },
+                    unit_amount:50*100,
+                },
+                quantity:1
+            },
+        ]
+
+        // const line_items = req.body.items.map((item)=>({
+        //     price_data:{
+        //         currency:"inr",
+        //         product_data:{
+        //             name:item.name
+        //         },
+        //         unit_amount:item.price*100-req.body.promoDiscount*100
+        //     },
+        //     quantity:item.quantity
+        // }))
+
+        // line_items.push({
+        //     price_data:{
+        //         currency:"inr",
+        //         product_data:{
+        //             name:"Delivery Charges"
+        //         },
+        //         unit_amount:50*100
+        //     },
+        //     quantity:1
+        // })
+
+        // if(  typeof req.body.promoDiscount === "number" &&req.body.promoDiscount > 0){
+        //     line_items.push({
+        //         price_data:{
+        //             currency:"inr",
+        //             product_data:{
+        //                 name:`Promo Discount (${req.body.promoCode})`
+        //             },
+        //             unit_amount:-Math.round(req.body.promoDiscount*100)
+        //         },
+        //         quantity:1
+        //     })
+        // }
 
         const session = await stripe.checkout.sessions.create({
-            line_items:line_items,
+            line_items,
             mode:'payment',
             success_url:`${frontend_url}/verify?success=true&orderId=${newOrder._id}`,
             cancel_url:`${frontend_url}/verify?success=false&orderId=${newOrder._id}`,
@@ -60,6 +102,14 @@ const verifyOrder = async (req,res) => {
     try{
         if(success=="true"){
             await orderModel.findByIdAndUpdate(orderId,{payment:true});
+
+            const order = await orderModel.findById(orderId);
+            if(order && order.promoCode){
+                await promocodeModel.findOneAndUpdate(
+                    {code:order.promoCode},
+                    {$inc:{usedCount:1}}
+                );
+            }
             res.json({success:true,message:"Paid"})
         }
         else{

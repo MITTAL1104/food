@@ -31,10 +31,10 @@ const List = () => {
   }, []);
 
   return (
-    <div className="list add flex-col">
+    <div className="foodlist add flex-col">
       <p>All Foods List</p>
-      <div className="list-table">
-        <div className="list-table-format title">
+      <div className="foodlist-table">
+        <div className="foodlist-table-format title">
           <b>Image</b>
           <b>Name</b>
           <b>Category</b>
@@ -43,7 +43,7 @@ const List = () => {
         </div>
         {list.map((item, index) => {
           return (
-            <div key={index} className="list-table-format">
+            <div key={index} className="foodlist-table-format">
               <img src={`${url}/images/` + item.image} alt="" />
               <p>{item.name}</p>
               <p>{item.category}</p>

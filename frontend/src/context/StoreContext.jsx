@@ -8,6 +8,8 @@ const StoreContextProvider = (props) => {
   const url = import.meta.env.VITE_API_URL;
   const [token, setToken] = useState("");
   const [food_list, setFoodList] = useState([]);
+  const [appliedPromoCode,setAppliedPromoCode] = useState("");
+  const [promoDiscount,setPromoDiscount] = useState(0);
 
   const addToCart = async (itemId) => {
     if (!cartItems[itemId]) {
@@ -69,6 +71,10 @@ const StoreContextProvider = (props) => {
     url,
     token,
     setToken,
+    appliedPromoCode,
+    setAppliedPromoCode,
+    promoDiscount,
+    setPromoDiscount
   };
   return (
     <StoreContext.Provider value={contextValue}>

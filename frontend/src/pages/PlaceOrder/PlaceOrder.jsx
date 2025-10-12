@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const PlaceOrder = () => {
-  const { getTotalCartAmount,token,food_list,cartItems,url } = useContext(StoreContext);
+  const { getTotalCartAmount,token,food_list,cartItems,url,appliedPromoCode, promoDiscount } = useContext(StoreContext);
   const navigate = useNavigate();
 
   const [data,setData] = useState({
@@ -39,7 +39,9 @@ const PlaceOrder = () => {
     let orderData ={
       address:data,
       items:orderItems,
-      amount:getTotalCartAmount()+50,
+      amount:getTotalCartAmount()+50-promoDiscount,
+      promoCode:appliedPromoCode,
+      promoDiscount:promoDiscount,
     }
     let response = await axios.post(url+"/api/order/place",orderData,{headers:{token}})
     if(response.data.success){
@@ -93,10 +95,19 @@ const PlaceOrder = () => {
               <p>₹{getTotalCartAmount() === 0 ? 0 : 50}</p>
             </div>
             <hr />
+            {promoDiscount >0 && (
+              <>
+                <div className="cart-total-details">
+                  <p>Promo Discount</p>
+                  <p>-₹{promoDiscount}</p>
+                </div>
+                <hr />
+              </>
+            )}
             <div className="cart-total-details">
               <b>Total</b>
               <b>
-                ₹{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 50}
+                ₹{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 50-promoDiscount}
               </b>
             </div>
           </div>
