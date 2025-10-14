@@ -12,7 +12,6 @@ const MyOrders = () => {
     const fetchOrders = async () => {
         const response = await axios.post(url+"/api/order/userorders",{},{headers:{token}});
         setData(response.data.data);
-        console.log(response.data.data);
     }
 
     useEffect(() => {
@@ -27,7 +26,7 @@ const MyOrders = () => {
         <div className="container">
             {data.map((order,index)=>{
                 return(
-                    <div className="my-orders-order">
+                    <div key={index} className="my-orders-order">
                         <img src={assets.parcel_icon} alt="" />
                         <p>{order.items.map((item,index)=>{
                             if(index===order.items.length-1){

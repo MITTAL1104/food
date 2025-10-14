@@ -96,6 +96,30 @@
     border-radius: 4px;
 }
 
+.cart-promocode select{
+    margin-top: 10px;
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fafafa;
+    font-size: 15px;
+    margin-bottom: 8px;
+    outline: none;
+    transition: border-color 0.2s;
+    cursor: pointer;
+}
+
+.cart-promocode select:focus{
+    border-color:#ff4d4f;
+    background: #fff;
+}
+
+.cart-promocode option{
+    font-size: 15px;
+    padding: 6px 0;
+}
+
 @media (max-width:750px){
     .cart-bottom{
         flex-direction: column-reverse;
