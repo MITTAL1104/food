@@ -122,7 +122,7 @@ const verifyOrder = async (req,res) => {
     }
 }
 
-// user orders for frontend
+// update all the orders of a user
 const userOrders = async(req,res) => {
     try{
         const orders = await orderModel.find({userId:req.body.userId});
@@ -131,6 +131,17 @@ const userOrders = async(req,res) => {
         console.log(error);
         res.json({success:false,message:"Error"});
     }
+}
+
+//update specific order for the user
+const trackOrder = async (req, res) => {
+  try {
+    const order = await orderModel.findOne({_id: req.body.orderId, userId: req.body.userId});
+    return res.json({ success: true, data: order });
+  } catch(error) {
+    console.log(error);
+    return res.json({ success:false, message:"Error" });
+  }
 }
 
 //Listing orders for admin panel
@@ -155,4 +166,4 @@ const updateStatus = async(req,res)=>{
     }
 }
 
-export {placeOrder,verifyOrder,userOrders,listOrders,updateStatus}
+export {placeOrder,verifyOrder,userOrders,trackOrder,listOrders,updateStatus}

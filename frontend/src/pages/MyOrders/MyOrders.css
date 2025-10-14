@@ -11,7 +11,7 @@
 
 .my-orders-order{
     display: grid;
-    grid-template-columns: 0.5fr 2fr 1fr 1fr 2fr 1fr;
+    grid-template-columns: 0.5fr 1.5fr 1fr 1fr 1.5fr 1.5fr 1fr;
     align-items: center;
     gap: 30px;
     font-size: 14px;
@@ -40,6 +40,62 @@
     background-color: #ffe1e1;
     cursor: pointer;
     color: #454545;
+}
+
+.eye-button{
+    border: none;
+    padding: 5px 0px;
+    border-radius: 4px;
+    background-color: #ffe1e1;
+    cursor: pointer;
+    color: #454545;
+}
+
+.my-orders-order button:hover{
+    background-color: tomato
+}
+
+.my-orders-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.my-orders-refresh {
+  padding: 12px 0px;
+  border-radius: 4px;
+  background-color: tomato;
+  border: none;
+  cursor: pointer;
+  color: #454545;
+  font-size: 14px;
+  min-width: 150px; /* ensures similar size to the "Track Order" button */
+  font-weight: 500;
+  margin-right: 13px;
+}
+.my-orders-refresh:hover {
+  background-color: #ffd1d1;
+}
+
+.orders-spinner{
+    text-align: center;
+    margin: 40px 0;
+}
+
+.spinner{
+    width: 40px;
+    height: 40px;
+    border: 4px solid #ddd;
+    border-top: 4px solid tomato;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin{
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
 }
 
 @media(max-width:900px){
