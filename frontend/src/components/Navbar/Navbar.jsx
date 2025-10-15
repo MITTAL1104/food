@@ -14,6 +14,11 @@ const Navbar = ({ setShowLogin }) => {
     navigate("/");
   };
 
+  const handleSectionClick = (section)=>{
+    navigate("/",{state:{scrollTo:section}});
+    setMenu(section);
+  }
+
   return (
     <div className="navbar">
       <Link to="/">
@@ -22,28 +27,28 @@ const Navbar = ({ setShowLogin }) => {
       <ul className="navbar-menu">
         <Link
           to="/"
-          onClick={() => setMenu("home")}
+          onClick={() => handleSectionClick("home")}
           className={menu === "home" ? "active" : ""}
         >
           Home
         </Link>
         <a
           href="#explore-menu"
-          onClick={() => setMenu("menu")}
+          onClick={() => handleSectionClick("menu")}
           className={menu === "menu" ? "active" : ""}
         >
           Menu
         </a>
         <a
           href="#app-download"
-          onClick={() => setMenu("mobile-app")}
+          onClick={() => handleSectionClick("mobile-app")}
           className={menu === "mobile-app" ? "active" : ""}
         >
           Mobile-App
         </a>
         <a
           href="#footer"
-          onClick={() => setMenu("contact-us")}
+          onClick={() => handleSectionClick("contact-us")}
           className={menu === "contact-us" ? "active" : ""}
         >
           Contact Us
