@@ -8,6 +8,8 @@ import Orders from "./pages/Orders/Orders";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Promocodes from "./pages/Promocodes/Promocodes";
+import AddCategory from "./pages/AddCategory/AddCategory";
+import ListCategory from "./pages/ListCategory/ListCategory";
 
 const App = () => {
   return (
@@ -22,6 +24,8 @@ const App = () => {
           <Route path="/list" element={<List />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/promocodes" element={<Promocodes />} />
+          <Route path="/addCategory" element={<AddCategory />} />
+          <Route path="/listCategory" element={<ListCategory />} />
         </Routes>
       </div>
     </div>
